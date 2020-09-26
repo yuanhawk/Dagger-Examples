@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.codingwithmitch.daggerpractice.R;
 
+import com.codingwithmitch.daggerpractice.databinding.LayoutPostListItemBinding;
 import com.codingwithmitch.daggerpractice.models.Post;
 
 import java.util.ArrayList;
@@ -22,8 +23,9 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_post_list_item, parent, false);
-        return new PostViewHolder(view);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        LayoutPostListItemBinding binding = LayoutPostListItemBinding.inflate(inflater, parent, false);
+        return new PostViewHolder(binding);
     }
 
     @Override
@@ -43,15 +45,15 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     public class PostViewHolder extends RecyclerView.ViewHolder{
 
-        TextView title;
+        private LayoutPostListItemBinding binding;
 
-        public PostViewHolder(@NonNull View itemView) {
-            super(itemView);
-            title = itemView.findViewById(R.id.title);
+        public PostViewHolder(@NonNull LayoutPostListItemBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
 
         public void bind(Post post){
-            title.setText(post.getTitle());
+            binding.title.setText(post.getTitle());
         }
     }
 }

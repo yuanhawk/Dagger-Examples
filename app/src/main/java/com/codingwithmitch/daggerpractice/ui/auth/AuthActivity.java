@@ -1,9 +1,5 @@
 package com.codingwithmitch.daggerpractice.ui.auth;
 
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import dagger.android.support.DaggerAppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -15,8 +11,12 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.bumptech.glide.RequestManager;
 import com.codingwithmitch.daggerpractice.R;
+import com.codingwithmitch.daggerpractice.databinding.ActivityAuthBinding;
 import com.codingwithmitch.daggerpractice.models.User;
 import com.codingwithmitch.daggerpractice.ui.main.MainActivity;
 import com.codingwithmitch.daggerpractice.viewmodels.ViewModelProviderFactory;
@@ -24,11 +24,15 @@ import com.codingwithmitch.daggerpractice.viewmodels.ViewModelProviderFactory;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import dagger.android.support.DaggerAppCompatActivity;
+
 public class AuthActivity extends DaggerAppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "AuthActivity";
 
     private AuthViewModel viewModel;
+
+    private ActivityAuthBinding binding;
 
     private EditText userId;
     private ProgressBar progressBar;
@@ -53,13 +57,15 @@ public class AuthActivity extends DaggerAppCompatActivity implements View.OnClic
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_auth);
-        userId = findViewById(R.id.user_id_input);
-        progressBar = findViewById(R.id.progress_bar);
+        binding = ActivityAuthBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        findViewById(R.id.login_button).setOnClickListener(this);
+        userId = binding.userIdInput;
+        progressBar = binding.progressBar;
 
-        viewModel = ViewModelProviders.of(this, providerFactory).get(AuthViewModel.class);
+        binding.loginButton.setOnClickListener(this);
+
+        viewModel = new ViewModelProvider(this, providerFactory).get(AuthViewModel.class);
 
         setLogo();
 

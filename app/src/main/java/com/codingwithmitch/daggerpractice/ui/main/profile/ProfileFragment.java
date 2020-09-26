@@ -7,17 +7,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.codingwithmitch.daggerpractice.R;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.codingwithmitch.daggerpractice.databinding.FragmentProfileBinding;
 import com.codingwithmitch.daggerpractice.models.User;
 import com.codingwithmitch.daggerpractice.ui.auth.AuthResource;
 import com.codingwithmitch.daggerpractice.viewmodels.ViewModelProviderFactory;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import dagger.android.support.DaggerFragment;
 
 public class ProfileFragment extends DaggerFragment {
@@ -25,6 +26,7 @@ public class ProfileFragment extends DaggerFragment {
     private static final String TAG = "ProfileFragment";
 
     private ProfileViewModel viewModel;
+    private FragmentProfileBinding binding;
     private TextView email, username, website;
 
     @Inject
@@ -33,19 +35,17 @@ public class ProfileFragment extends DaggerFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_profile, container, false);
-    }
+        Log.d(TAG, "onCreateView: ProfileFragment was created...");
+        binding = FragmentProfileBinding.inflate(inflater, container, false);
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        Log.d(TAG, "onViewCreated: ProfileFragment. " + this);
-        email = view.findViewById(R.id.email);
-        username = view.findViewById(R.id.username);
-        website = view.findViewById(R.id.website);
+        email = binding.email;
+        username = binding.username;
+        website = binding.website;
 
-        viewModel = ViewModelProviders.of(this, providerFactory).get(ProfileViewModel.class);
+        viewModel = new ViewModelProvider(this, providerFactory).get(ProfileViewModel.class);
 
         subscribeObservers();
+        return binding.getRoot();
     }
 
     private void subscribeObservers(){

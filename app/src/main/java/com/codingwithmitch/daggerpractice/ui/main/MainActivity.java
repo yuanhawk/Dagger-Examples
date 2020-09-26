@@ -5,11 +5,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.codingwithmitch.daggerpractice.BaseActivity;
-import com.codingwithmitch.daggerpractice.R;
-import com.codingwithmitch.daggerpractice.ui.main.posts.PostsFragment;
-import com.google.android.material.navigation.NavigationView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.GravityCompat;
@@ -19,20 +14,27 @@ import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import com.codingwithmitch.daggerpractice.BaseActivity;
+import com.codingwithmitch.daggerpractice.R;
+import com.codingwithmitch.daggerpractice.databinding.ActivityMainBinding;
+import com.google.android.material.navigation.NavigationView;
+
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "MainActivity";
 
+    private ActivityMainBinding binding;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        drawerLayout = binding.drawerLayout;
+        navigationView = binding.navView;
 
+        setContentView(binding.getRoot());
         init();
     }
 
